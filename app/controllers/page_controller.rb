@@ -41,14 +41,14 @@ class PageController < PM::Screen
           open_modal AudioTableScreen.new(nav_bar: true, transition_style: UIModalTransitionStyleFlipHorizontal,
               presentation_style: UIModalPresentationFormSheet)
 
-        end
-
-
           # UIView.animateWithDuration(1,
           #   animations:lambda {
           #     # animate
           #     # @view.transform = ...
           #   })
+
+          # table:canEditRowAtIndexPath:
+        end
         
         wrapperView.addSubview(numberLabel)
         @my_scroll_view.addSubview(wrapperView)
