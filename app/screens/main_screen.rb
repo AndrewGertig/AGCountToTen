@@ -47,7 +47,6 @@ class MainScreen < PM::Screen
           #     # @view.transform = ...
           #   })
 
-          # table:canEditRowAtIndexPath:
         end
         
         wrapperView.addSubview(numberLabel)
@@ -78,18 +77,20 @@ class MainScreen < PM::Screen
     pageWidth = @my_scroll_view.frame.size.width
     page = ((@my_scroll_view.contentOffset.x - pageWidth / 2) / pageWidth).floor + 1
 
-    puts "Page = #{page}"
+    # puts "Page = #{page}"
 
     if (page == 0)
+      page = 10
       scrollToPage(10)
     elsif (page == 11)
+      page = 1
       scrollToPage(1)
     end
 
     playPageSound(page)
   end
 
-  def scrollToPage(page) #View(view, withPageNumber:num)
+  def scrollToPage(page)
     x = view.frame.size.width * page
     y = 0
     size = view.frame.size
@@ -130,12 +131,11 @@ class MainScreen < PM::Screen
   end
 
   def playPageSound(page)
-    # @recorder = Recorder.new
     @fileUrl = FileUrl.new(page)
-    # @recording = @recorder.newRecorder(@fileUrl.url)
-
-    @player = Player.new @fileUrl.url
-    @player.play
+    if @fileUrl.exists
+      @player = Player.new @fileUrl.url
+      @player.play
+    end
   end
 
   # Not used yet, stretches image to fit space
