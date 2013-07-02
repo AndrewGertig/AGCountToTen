@@ -1,62 +1,70 @@
 class PageController < PM::Screen
 
-  def on_load
-    # super
+  def will_appear
 
-    @views = []
-    @numbers = [10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1]
-    margin = 0
-    scrollViewRect = view.bounds
-
-    @my_scroll_view = AGScrollView.alloc.initWithFrame(scrollViewRect)
-    @my_scroll_view.pagingEnabled = true
-    @my_scroll_view.delegate = self
-    @my_scroll_view.contentSize = CGSizeMake(scrollViewRect.size.width * @numbers.count, scrollViewRect.size.height)
-    view.addSubview(@my_scroll_view)
-
-    deviceHeight = view.frame.size.height
-    centerScreen = deviceHeight / 2.0
-    labelHeight = 260
-    labelY = centerScreen - labelHeight / 2.0
+    # view cycle: initialize, on_load, will_appear, did_appear, will_disappear, did_disappear
+    # will_appear ensures that self.view exists
+    # and assigning the block to a variable ensures that your view setup is only called once
+    # onload should be used for setting things like the nav bar style and the tab bar icons, etc
 
 
-    @numbers.each do |num|
+    @view_loaded ||= begin
+      @views = []
+      @numbers = [10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1]
+      margin = 0
+      scrollViewRect = view.bounds
 
-      numberLabel = AgLabel.alloc.initWithFrame([[0, labelY], [view.frame.size.width, labelHeight]])
-      numberLabel.text = "#{num}"
-      # numberLabel.backgroundColor = UIColor.blackColor
+      @my_scroll_view = AGScrollView.alloc.initWithFrame(scrollViewRect)
+      @my_scroll_view.pagingEnabled = true
+      @my_scroll_view.delegate = self
+      @my_scroll_view.contentSize = CGSizeMake(scrollViewRect.size.width * @numbers.count, scrollViewRect.size.height)
+      view.addSubview(@my_scroll_view)
 
-      wrapperView = UIView.alloc.initWithFrame(scrollViewRect)
+      deviceHeight = view.frame.size.height
+      centerScreen = deviceHeight / 2.0
+      labelHeight = 260
+      labelY = centerScreen - labelHeight / 2.0
 
-      self.viewColorsForNumber(num, wrapperView:wrapperView, andLabel:numberLabel)
 
-      wrapperView.when_pressed do
-        # Opening a modal screen with transition or presentation styles
-        open AudioTableScreen.new(nav_bar: true, modal: true)
-            # transition_style: UIModalTransitionStyleFlipHorizontal
-            # presentation_style: UIModalPresentationFormSheet
+      @numbers.each do |num|
+
+        numberLabel = AgLabel.alloc.initWithFrame([[0, labelY], [view.frame.size.width, labelHeight]])
+        numberLabel.text = "#{num}"
+        # numberLabel.backgroundColor = UIColor.blackColor
+
+        wrapperView = UIView.alloc.initWithFrame(scrollViewRect)
+
+        self.viewColorsForNumber(num, wrapperView:wrapperView, andLabel:numberLabel)
+
+        wrapperView.when_pressed do
+          # Opening a modal screen with transition or presentation styles
+          open_modal AudioTableScreen.new(nav_bar: true, transition_style: UIModalTransitionStyleFlipHorizontal,
+              presentation_style: UIModalPresentationFormSheet)
+
+        end
+
+
+          # UIView.animateWithDuration(1,
+          #   animations:lambda {
+          #     # animate
+          #     # @view.transform = ...
+          #   })
+        
+        wrapperView.addSubview(numberLabel)
+        @my_scroll_view.addSubview(wrapperView)
+        # @views.addObject(wrapperView)
+
+        # This is at the end so that the starting X location is updated for the next iteration
+        scrollViewRect.origin.x += scrollViewRect.size.width
       end
 
+      # Scroll one page automatically so that we don't see the last page on the left.
+      #@my_scroll_view.scrollRectToVisible([[view.frame.size.width, 0],[view.frame.size.width, view.frame.size.height]], animated:false)
+      scrollToPage(1)
 
-        # UIView.animateWithDuration(1,
-        #   animations:lambda {
-        #     # animate
-        #     # @view.transform = ...
-        #   })
-      
-      wrapperView.addSubview(numberLabel)
-      @my_scroll_view.addSubview(wrapperView)
-      # @views.addObject(wrapperView)
-
-      # This is at the end so that the starting X location is updated for the next iteration
-      scrollViewRect.origin.x += scrollViewRect.size.width
+      self
     end
 
-    # Scroll one page automatically so that we don't see the last page on the left.
-    #@my_scroll_view.scrollRectToVisible([[view.frame.size.width, 0],[view.frame.size.width, view.frame.size.height]], animated:false)
-    scrollToPage(1)
-
-    self
   end
 
   # Gets fired because the UIScrollView delegate is set to self, which is the UIViewController

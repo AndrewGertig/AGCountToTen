@@ -1,7 +1,7 @@
 class AppDelegate < PM::Delegate
 
   def on_load(app, options)
-    open PageController.new(nav_bar: false)
+    open PageController.new(nav_bar: true)
     # open HomeScreen.new(nav_bar: true)
 
     # @boop   = BoopScreen.new(nav_bar: true)
