@@ -1,4 +1,4 @@
-class AgLabel < UILabel
+class AGLabel < UILabel
 
 
   def initWithFrame(frame)

@@ -10,7 +10,7 @@ class AudioTableScreen < PM::GroupedTableScreen
     # set_nav_bar_right_button("Save", action: :save)
     # set_tab_bar_item(title: "Settings", icon: "settings.png")
 
-      set_nav_bar_right_button "Done", action: :close_modal, type: UIBarButtonItemStyleDone
+      set_nav_bar_right_button "Done", action: :close, type: UIBarButtonItemStyleDone
       # self.navigationController.setToolbarHidden(false)
       # self.toolbarItems = [dont_show_button, flexible_space, purchase_button]
   end
@@ -75,11 +75,11 @@ class AudioTableScreen < PM::GroupedTableScreen
   # and pass in the specified arguments.
   def open_recorder(args={})
     # puts "Tapped Cell with id: #{args[:id]}" # => 3
-    open BoopScreen.new(args)
+    open AudioRecordingScreen.new(args)
   end
 
-  def close_modal
-    self.navigationController.dismissModalViewControllerAnimated(true)
-  end
+  # def close_modal
+  #   self.navigationController.dismissModalViewControllerAnimated(true)
+  # end
 
 end

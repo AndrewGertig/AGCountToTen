@@ -1,4 +1,4 @@
-class BoopScreen < PM::Screen
+class AudioRecordingScreen < PM::Screen
 
   attr_accessor :audio_number, :name
 

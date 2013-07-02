@@ -1,4 +1,4 @@
-class PageController < PM::Screen
+class MainScreen < PM::Screen
 
   def will_appear
 
@@ -28,7 +28,7 @@ class PageController < PM::Screen
 
       @numbers.each do |num|
 
-        numberLabel = AgLabel.alloc.initWithFrame([[0, labelY], [view.frame.size.width, labelHeight]])
+        numberLabel = AGLabel.alloc.initWithFrame([[0, labelY], [view.frame.size.width, labelHeight]])
         numberLabel.text = "#{num}"
         # numberLabel.backgroundColor = UIColor.blackColor
 
@@ -85,6 +85,8 @@ class PageController < PM::Screen
     elsif (page == 11)
       scrollToPage(1)
     end
+
+    playPageSound(page)
   end
 
   def scrollToPage(page) #View(view, withPageNumber:num)
@@ -125,6 +127,15 @@ class PageController < PM::Screen
       end
   
       true
+  end
+
+  def playPageSound(page)
+    # @recorder = Recorder.new
+    @fileUrl = FileUrl.new(page)
+    # @recording = @recorder.newRecorder(@fileUrl.url)
+
+    @player = Player.new @fileUrl.url
+    @player.play
   end
 
   # Not used yet, stretches image to fit space
