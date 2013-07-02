@@ -1,6 +1,6 @@
 class AudioTableScreen < PM::GroupedTableScreen
 
-  title "Back"
+  # title "Back"
 
   def will_appear
     self.setTitle "Sounds"
@@ -10,7 +10,7 @@ class AudioTableScreen < PM::GroupedTableScreen
     # set_nav_bar_right_button("Save", action: :save)
     # set_tab_bar_item(title: "Settings", icon: "settings.png")
 
-    set_nav_bar_right_button "Done", action: :close, type: UIBarButtonItemStyleDone
+    # set_nav_bar_right_button "Done", action: :close, type: UIBarButtonItemStyleDone
     # self.navigationController.setToolbarHidden(false)
     # self.toolbarItems = [dont_show_button, flexible_space, purchase_button]
   end

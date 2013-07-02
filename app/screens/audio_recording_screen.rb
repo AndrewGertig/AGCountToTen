@@ -29,13 +29,9 @@ class AudioRecordingScreen < PM::Screen
   end
 
   def newRecording(file_name)
-    puts "Create new Recording at: #{file_name} .caf"
+    puts "Create new Recording named: sound_#{file_name}.caf"
     @fileUrl = FileUrl.new(file_name)
     @recording = @recorder.newRecorder(@fileUrl.url) 
-
-    # unless @fileUrl.exists
-    #   puts "Create new Recording at: #{file_name} .caf"
-    # end
   end
 
   def recordAndStopButtonTapped
@@ -47,7 +43,7 @@ class AudioRecordingScreen < PM::Screen
       # @fileUrl.renameFileTo("renamed")
     # Record Button Pressed
     else
-      newRecording(self.audio_number) unless @fileUrl #@tempFile.exists
+      newRecording(self.audio_number) unless @fileUrl
       @recording.record
     end
 

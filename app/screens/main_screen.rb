@@ -38,7 +38,7 @@ class MainScreen < PM::Screen
 
         wrapperView.when_pressed do
           # Opening a modal screen with transition or presentation styles
-          open_modal AudioTableScreen.new(nav_bar: true, transition_style: UIModalTransitionStyleFlipHorizontal,
+          open_modal SettingsScreen.new(nav_bar: true, transition_style: UIModalTransitionStyleFlipHorizontal,
               presentation_style: UIModalPresentationFormSheet)
 
           # UIView.animateWithDuration(1,
@@ -132,10 +132,11 @@ class MainScreen < PM::Screen
 
   def playPageSound(page)
     @fileUrl = FileUrl.new(page)
-    if @fileUrl.exists
-      @player = Player.new @fileUrl.url
-      @player.play
-    end
+
+    @file_url = @fileUrl.exists ? @fileUrl.url : @fileUrl.defaultUrl
+
+    @player = Player.new @file_url
+    @player.play
   end
 
   # Not used yet, stretches image to fit space

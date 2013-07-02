@@ -14,13 +14,22 @@ class FileUrl
     "#{dir}/sound_#{@file_name}.caf"
   end
 
-  def soundFilePath(new_name)
+  def renamedFilePath(new_name)
     "#{dir}/sound_#{new_name}.caf"
+  end
+
+  def defaultFilePath
+    "#{App.resources_path}/sound_#{@file_name}.caf"
   end
 
   def url
     NSURL.fileURLWithPath(recorderFilePath)
   end
+
+  def defaultUrl
+    NSURL.fileURLWithPath(defaultFilePath)
+  end
+
 
   def fileMgr
     NSFileManager.defaultManager
@@ -41,12 +50,12 @@ class FileUrl
   end
 
   def exists
-    fileMgr.fileExistsAtPath(soundFilePath(@file_name))
+    fileMgr.fileExistsAtPath(recorderFilePath)
   end
 
   def renameFileTo(new_name)
     err = Pointer.new(:object)
-    filePath = soundFilePath(new_name)
+    filePath = renamedFilePath(new_name)
  
     if (fileMgr.moveItemAtPath(recorderFilePath, toPath:filePath, error:err) != true) 
       puts "Unable to move file: #{err}"
